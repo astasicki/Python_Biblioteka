@@ -95,7 +95,15 @@ class User:
 
             time.sleep(4)
             os.system('cls')
-            return 1
+
+
+            print("Użytkownik został dodany \n")
+            print("---------------------------------")
+            print("Wybierz opcję: ")
+            back = input("1 - Powrót do menu głównego ")
+
+            if back == 1:
+                return 1
 
         except:
             print("------------------------------------------")
@@ -142,6 +150,13 @@ class User:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+        print("Użytkownik został usunięty \n")
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
 
     def user_search(self,user_id):
 
@@ -204,10 +219,6 @@ class User:
         arr = list(args)
 
 
-        #print(arr[1])
-        print(arr[1][0])
-        #print(arr[1][1])
-
 
         name, surame, birth_date,pesel, email, password, number, gender, city, street, house_no,librarian, false_login_counter, false_login_date = arr[1][0]
         user_id = arr[1][1]
@@ -240,7 +251,7 @@ class User:
             if new_data[i] != "":
                 old_data[i] = new_data[i]
 
-        print(old_data)
+
         #Połączenie do SQL
         db_msql = pyodbc.connect("Driver={SQL Server};"
                                  "Server=DELLV3510-01\SQLEXPRESS;"
@@ -251,18 +262,13 @@ class User:
         cursorMS = db_msql.cursor()
 
 
-        #Kwerenda dodająca atrybuty użytkownika do bazy
-        #query = "INSERT INTO tblUser(name, surname, birth_date, email, password, phone, gender, city, street, house_no, librarian, false_login_counter, false_login_date, actual_borrowing_number, actual_booking_number) " \
-         #       "VALUES (?,?,CONVERT(datetime,?,120),?,?,?,?,?,?,?,?,?,CONVERT(datetime,?,120),?,?) "
-
 
         query = "UPDATE tblUser " \
                 "SET name = ?, surname = ?, birth_date = CONVERT(datetime,?,120),PESEL = ?, email = ?, password = ?, phone = ?, gender = ?, city = ?, street = ?, house_no = ?, librarian = ?,false_login_counter = ?, false_login_date = CONVERT(datetime,?,120)" \
                 "WHERE user_id = ?;"
         #Argumenty dodawane poprzez kwerendę
         old_data.append(user_id)
-        for i in old_data:
-            print(i)
+
         arg = old_data
 
         #Wywołanie kwerendy
@@ -273,6 +279,14 @@ class User:
 
         #Zamknięcie połączenia z bazą
         db_msql.close()
+
+        print("Dane użytkownika zostały zaktualizowane \n")
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
 
     def user_booking(self,user_id):
 
@@ -343,6 +357,13 @@ class User:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+
     def user_borrowing(self,user_id):
 
         """Wywołanie metody powoduje wyświetlenie wypożyczonych przez użytkownika książek """
@@ -394,6 +415,7 @@ class User:
             for row in cursorMS:
                 index += 1
                 print(f"-------- KSIĄŻKA NR {index} --------")
+                print(f"ID: {row[0]}")
                 print(f"ISBN: {row[1]}")
                 print(f"Tytuł: {row[2]}")
                 print(f"Liczba stron: {row[3]}")
@@ -411,6 +433,17 @@ class User:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+
+        print("---------------------------------")
+        print(" "
+            "\n 1 - Przedłuż wybraną książkę"
+            "\n 2 - Powrót do menu głównego ")
+        back = int(input("Wybierz opcję: "))
+
+        if back == 2:
+            return 2
+        elif back == 1:
+            return 1
 
     def user_longer_endtime (self,user_id,book_id):
 
@@ -457,6 +490,15 @@ class User:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+        print("Termin oddania książki został wydłużony")
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+        if back == 1:
+            return 1
+
+
+
 
     def user_penalty(self,user_id):
 
@@ -533,8 +575,12 @@ class User:
         if eksport =="T":
             df.to_csv(r"C:\Users\a.sochaj\PycharmProjects\BIBLIOTEKA\kary.csv",index = False)
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+        if back == 1:
+            return 1, df
 
-        return df
 
     def user_login(self):
 
@@ -634,6 +680,60 @@ class User:
             print(f"Użytkownik o adresie {self.email} widnieje w bazie użytkowników - zaloguj się")
             return 0
         else:
+            return 1
+
+    def user_find(self):
+        """Wywołanie metody powoduje wyszukanie użytkownika po parametrach name, surname, email"""
+
+
+        user_id = int(input("Wprowadź id_użytkownika lub wprowadź 0: "))
+        name = input("Wprowadź imię lub zostaw wartość pustą: ")
+        surname = input("Wprowadź nazwisko lub zostaw wartość pustą: ")
+        email = input("Wprowadż adres e-mail użytkownika: ")
+
+        # Połączenie do SQL
+        db_msql = pyodbc.connect("Driver={SQL Server};"
+                                 "Server=DELLV3510-01\SQLEXPRESS;"
+                                 "Database=biblioteka;"
+                                 "Trusted_connection =yes;")
+
+        # Cursor
+        cursorMS = db_msql.cursor()
+        # Kwerenda pozwalająca na wyszukiwanie książki.
+        query = """SELECT * FROM [dbo].[tblUser]  
+                   WHERE
+                   ([user_id] = ? OR
+                   CHARINDEX(?, [name], 1) <> 0) OR
+                   CHARINDEX(?, [surname], 1) <> 0 OR
+                   CHARINDEX(?, [email], 1) <> 0;"""
+
+        # Argumenty dodawane poprzez kwerendę
+        arg = (user_id, name,  surname, email)
+
+        # Wywołanie kwerendy
+        cursorMS.execute(query,arg)
+        wynik_zapytania = cursorMS.fetchall()
+        os.system('cls')
+        print("---------------------------------")
+        print("Wyniki wyszukiwania:")
+        for row in wynik_zapytania:
+
+            print(f" user_id: {row[0]} \n"
+                  f" name: {row[1]}\n"
+                  f" surname: {row[2]} \n"
+                  f" email: {row[5]}")
+            print("---------------------------------")
+
+        # Zatwierdzenie wywołania kwerendy
+        db_msql.commit()
+
+        # Zamknięcie połączenia z bazą
+        db_msql.close()
+
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
             return 1
 
 
