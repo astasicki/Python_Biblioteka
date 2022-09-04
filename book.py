@@ -3,6 +3,7 @@
 #Bilioteki zewnętrzne
 import datetime
 import os
+import time
 
 import pyodbc
 
@@ -319,6 +320,9 @@ class Book:
                 self.description = row[9]
                 self.state = row[10]
 
+
+                print("---------------------------------")
+                print("Wyniki wyszukiwania:")
                 print(f"book_id: {self.book_id}\n"
                       f"ISBN: {self.ISBN}\n"
                       f"title: {self.title}\n"
@@ -330,8 +334,16 @@ class Book:
                       f"year: {self.published_year}\n"
                       f"description: {self.description}\n"                           
                       f"state: {self.state} (1-dostępna,2-zarezerwowana,3-wypożyczona)\n")
+
+                print("---------------------------------")
+                print("Wybierz opcję: ")
+                back = input("1 - Powrót do menu głównego ")
+
+                if back == 1:
+                    return 1
             else:
                 print(f"Książka o podanym id: {book_id} nie występuje w bazie\n")
+                time.sleep(5)
                 break
 
         # Zatwierdzenie wywołania kwerendy
