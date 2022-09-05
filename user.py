@@ -571,14 +571,17 @@ class User:
         df['Tytul'] = titles
         df['Kara, zl'] = penaltys
 
+
         eksport = input("Czy chcesz wyeksportować raport? Nie - Enter, Tak - T").upper()
         if eksport =="T":
             df.to_csv(r"C:\Users\a.sochaj\PycharmProjects\BIBLIOTEKA\kary.csv",index = False)
+            print("Raport został wyeksportowany")
 
         print("---------------------------------")
         print("Wybierz opcję: ")
-        back = input("1 - Powrót do menu głównego ")
+        back = int(input("1 - Powrót do menu głównego "))
         if back == 1:
+
             return 1, df
 
 
@@ -729,7 +732,7 @@ class User:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
 
