@@ -38,7 +38,8 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
         print("\n")
         menu = int(input("Wybierz opcję edycji książki: \n"))
 
-        book = Book()
+        book = Book(book_id = book_id, ISBN = bk_isbn, title = bk_title, pages = bk_pages, cover = bk_cover, book_genre=bk_book_genre, thumbnail= bk_thumbnail,
+                    publisher=bk_publisher, published_year=bk_published_year, description=bk_description, state=bk_state)
 
         if menu == 1:
             os.system('cls')
