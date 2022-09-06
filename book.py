@@ -105,7 +105,9 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-        
+
+        print("Książka została dodana do bazy \n")
+
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -143,14 +145,14 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Książka została usunięta z bazy \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
 
         if back == 1:
             return 1
-        
+
     def book_update(self):
         """Wywołanie metody powoduje aktualizację danych dotyczących kasiążki o wskazanym book_id"""
         # Opcja powinna być dostępna tylko po wejściu w daną książkę!
@@ -217,14 +219,14 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Dane książki zostały zaktualizowane \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
 
         if back == 1:
             return 1
-        
+
     def author_id_search(self,author_name):
         # Połączenie do SQL
         db_msql = pyodbc.connect("Driver={SQL Server};"
@@ -434,14 +436,14 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
-
+        print("Książka została zarezerwowana \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
 
         if back == 1:
             return 1
-        
+
     def book_borrowing(self):
         """Wywołanie metody powoduje wypożyczenie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -489,15 +491,15 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Książka została wypożyczona \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
 
         if back == 1:
             return 1
-        
-        
+
+
     def book_review_add(self):
         """Wywołanie metody powoduje dodanie recenzji i oceny książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -531,7 +533,7 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Opinia została dodana \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -644,7 +646,7 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Odwołano rezerwacje książki \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -698,7 +700,7 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-
+        print("Książka została oddana \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
