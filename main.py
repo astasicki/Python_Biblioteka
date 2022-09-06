@@ -5,6 +5,111 @@ import os
 import time
 
 
+def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk_book_genre, bk_thumbnail, bk_publisher, bk_published_year, bk_description, bk_state, name):
+    os.system('cls')
+    running = True
+    while running:
+        os.system('cls')
+        print(f"Twoja książka o id {book_id} to: "
+              f"\n ISBN: {bk_isbn}, "
+              f"\n Tytuł: {bk_title},"
+              f"\n Liczba stron: {bk_pages} "
+              f"\n Okładka: {bk_cover}"
+              f"\n Gatunek: {bk_book_genre}"
+              f"\n Thumbnail: {bk_thumbnail}"
+              f"\n Wydawnictwo: {bk_publisher}"
+              f"\n Rok wydania: {bk_published_year}"
+              f"\n Opis: {bk_description}"
+              f"\n Status: {bk_state}")
+        print("\n")
+        print("--------MENU EDYCJI KSIĄŻKI--------")
+        print(""
+              "\n 1 - Usuń książkę,"
+              "\n 2 - Dodaj książkę"
+              "\n 3 - Zaktualizuj książkę"
+              "\n 4 - Wypożycz książkę"
+              "\n 5 - Zarezerwuj książkę"
+              "\n 6 - Dodaj recenzje"
+              "\n 7 - Pokaż recenzję"
+              "\n 8 - Oddaj książkę"
+              "\n 9 - Wróć do menu głównego"
+
+              )
+        print("\n")
+        menu = int(input("Wybierz opcję edycji książki: \n"))
+
+        book = Book()
+
+        if menu == 1:
+            os.system('cls')
+            print("--------USUŃ KSIĄŻKĘ--------")
+            deleting = book.book_delete()
+            if deleting == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 2:
+            os.system('cls')
+            print("--------DODAJ KSIĄŻKĘ--------")
+            add = book.book_add()
+            if add == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 3:
+            os.system('cls')
+            print("--------ZAKTUALIZUJ KSIĄŻKĘ--------")
+            updating = book.book_update()
+            if updating == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 4:
+            os.system('cls')
+            print("--------WYPOŻYCZ KSIĄŻKĘ--------")
+            borrow = book.book_borrowing()
+            if borrow == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 5:
+            os.system('cls')
+            print("--------ZAREZERWUJ KSIĄŻKĘ--------")
+            booking = book.book_booking()
+            if booking == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 6:
+            os.system('cls')
+            print("--------DODAJ RECENZJĘ--------")
+            review = book.book_review_add()
+            if review == 1:
+                os.system('cls')
+                pass
+
+
+        elif menu == 7:
+            os.system('cls')
+            print("--------POKAŻ RECENZJĘ--------")
+            review_show = book.book_review_show()
+            if review_show == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 8:
+            os.system('cls')
+            print("--------ODDAJ KSIĄŻKĘ--------")
+            book_back = book.book_return_borrowing()
+            if book_back == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 9:
+            print("--------PRZEJDŹ DO MENU GŁÓWNEGO--------")
+            os.system('cls')
+            menu_librarian(name)
+
 
 def menu_librarian_user_edition(user_id,us_name,us_surname,us_email,name):
     os.system('cls')
@@ -22,7 +127,7 @@ def menu_librarian_user_edition(user_id,us_name,us_surname,us_email,name):
               "\n 2 - Wyświetl zarezerwowane książki"
               "\n 3 - Wyświetl wypożyczone książki"
               "\n 4 - Wyświetl kary użytkownika za przekroczenie terminu"
-              "\n 5 - Wróć do menu głónego"
+              "\n 5 - Wróć do menu głównego"
               )
         print("\n")
         menu = int(input("Wybierz opcję edycji użytkownika: \n"))
@@ -86,7 +191,7 @@ def menu_librarian(name):
         print(f"Witaj {name}! Co nowego w świecie bibliotekarza?")
         print("\n------- KSIĄŻKI ------- "
               "\n 1 - Wyszukaj książkę,"
-              "\n 2 - Wybierz książkę,"
+              "\n 2 - Edytuj książkę,"
               
               "\n"
               "\n------- UŻYTKOWNICY ------- "
@@ -120,15 +225,16 @@ def menu_librarian(name):
 
 
 
-        # Wybierz książkę
+        # Edytuj książkę
         elif menu == 2:
             os.system('cls')
-            print("--------WYBIERZ KSIĄŻKĘ--------")
-            b = Book()
-            selection = b.book_selection()
+            print("--------EDYTUJ KSIĄŻKE--------")
 
-            if selection == 1:
-                print("WSZYSTKO OK")
+            book_id = input("Podaj book_id książki: ")
+            b1 = Book()
+            search = b1.book_search_as(book_id)
+            menu_librarian_book_edition(search[1], search[0][0], search[0][1], search[0][2], search[0][3], search[0][4], search[0][5], search[0][6], search[0][7], search[0][8], search[0][10], name)
+
 
 
 
@@ -321,5 +427,6 @@ def menu_library():
 
 if __name__ == "__main__":
     menu_library()
+
 
 
