@@ -105,7 +105,13 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+        
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
 
+        if back == 1:
+            return 1
 
     def book_delete(self):
         """Wywołanie metody powoduje usunięcie książki ze wskazanym parametrem book_id z tabali tblBook,
@@ -138,7 +144,13 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
 
+        if back == 1:
+            return 1
+        
     def book_update(self):
         """Wywołanie metody powoduje aktualizację danych dotyczących kasiążki o wskazanym book_id"""
         # Opcja powinna być dostępna tylko po wejściu w daną książkę!
@@ -206,6 +218,13 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+        
     def author_id_search(self,author_name):
         # Połączenie do SQL
         db_msql = pyodbc.connect("Driver={SQL Server};"
@@ -231,6 +250,13 @@ class Book:
             print(f"Brak autora o nazwie {author_name} w bazie. Proszę dodaj nowego authora lub sprawdź poprawnosć nazwy")
         else:
             return (author_id)
+
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
 
     def book_search(self):
         """Wywołanie metody powoduje wyszukanie książki po parametrach book_id, title, book_genre, state"""
@@ -267,6 +293,7 @@ class Book:
         print("---------------------------------")
         print("Wyniki wyszukiwania:")
         for row in wynik_zapytania:
+            print(row)
             print(f" book_id: {row[0]}; title: {row[2]}; genre: {row[5]} ")
 
         # Zatwierdzenie wywołania kwerendy
@@ -352,6 +379,13 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+
     def book_booking(self):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -400,6 +434,14 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+        
     def book_borrowing(self):
         """Wywołanie metody powoduje wypożyczenie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -448,6 +490,14 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+        
+        
     def book_review_add(self):
         """Wywołanie metody powoduje dodanie recenzji i oceny książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -481,6 +531,13 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
 
     def book_review_show(self):
         """Wywołanie metody powoduje wyświetlenie recenzji i ocen książki, którą aktualnie oglądamy"""
@@ -534,6 +591,13 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
+
     def book_return_booking(self):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
@@ -580,6 +644,13 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
+
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
+
+        if back == 1:
+            return 1
 
     def book_return_borrowing(self):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
@@ -628,7 +699,61 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
+        print("---------------------------------")
+        print("Wybierz opcję: ")
+        back = input("1 - Powrót do menu głównego ")
 
+        if back == 1:
+            return 1
+
+    def book_search_as(self,book_id):
+
+
+        """Pobranie danych z bazy dla danej książki"""
+
+
+        self.book_id = book_id
+
+        # Połączenie do SQL
+        db_msql = pyodbc.connect("Driver={SQL Server};"
+                                 "Server=DELLV3510-01\SQLEXPRESS;"
+                                 "Database=biblioteka;"
+                                 "Trusted_connection =yes;")
+
+        # Cursor
+        cursorMS = db_msql.cursor()
+
+        # Kwerenda dodająca atrybuty użytkownika do bazy
+        query = "SELECT * FROM tblBook WHERE book_id = ?;"
+
+        # Argumenty dodawane poprzez kwerendę
+        arg = (self.book_id)
+
+        # Wywołanie kwerendy
+        cursorMS.execute(query, arg)
+
+
+        # Zatwierdzenie wywołania kwerendy
+        #db_msql.commit()
+
+        result = [self.book_id, self.ISBN,self.title,self.pages,self.cover,self.book_genre,self.thumbnail,self.publisher, self.published_year,self.description, self.state]
+
+        for row in cursorMS:
+            print(row)
+            for index in range(1,len(result)):
+
+                result[index] = row[index]
+        book_id = result[0]
+        result = result[1:]
+        # Zamknięcie połączenia z bazą
+        db_msql.close()
+
+
+        if result[0] == "":
+            print("Brak książki o danym ID")
+
+        print(result, book_id)
+        return result,book_id
 # Test dodania książki do listy - działa :)
 # Book1 = Book()
 # print(Book1.book_add())
