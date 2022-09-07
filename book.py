@@ -365,11 +365,7 @@ class Book:
                       f"state: {self.state} (1-dostępna,2-zarezerwowana,3-wypożyczona)\n")
 
                 print("---------------------------------")
-                print("Wybierz opcję: ")
-                back = input("1 - Powrót do menu głównego ")
-
-                if back == 1:
-                    return 1
+                return row
             else:
                 print(f"Książka o podanym id: {book_id} nie występuje w bazie\n")
                 time.sleep(5)
