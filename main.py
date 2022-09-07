@@ -217,8 +217,13 @@ def menu_librarian(name):
         if menu == 1:
             os.system('cls')
             print("--------WYSZUKAJ KSIĄŻKĘ--------")
-            b = Book()
-            search = b.book_search()
+#ZMIANA_START zapętlenie wyszukiwania książki, możliwość ponownego szukania
+            search = 2
+            while search == 2:
+                os.system('csl')
+                b = Book()
+                search = b.book_search()
+#ZMIANA_KONIEC
 
             if search == 1:
                 os.system('cls')
@@ -231,12 +236,12 @@ def menu_librarian(name):
             os.system('cls')
             print("--------EDYTUJ KSIĄŻKE--------")
 
-            book_id = input("Podaj book_id książki: ")
+#ZMIANA!!! - wykorzystanie metody book_selection!!! zamiast search_as
             b1 = Book()
-            search = b1.book_search_as(book_id)
-            menu_librarian_book_edition(search[1], search[0][0], search[0][1], search[0][2], search[0][3], search[0][4], search[0][5], search[0][6], search[0][7], search[0][8], search[0][10], name)
-
-
+            search = b1.book_selection()
+            menu_librarian_book_edition(search[0], search[1], search[2], search[3], search[4], search[5],
+                                        search[6], search[7], search[8], search[9], search[10], name)
+# ZMIANA_KONIEC
 
 
 
@@ -409,8 +414,13 @@ def menu_library():
             elif menu == 3:
                 os.system('cls')
                 print("--------WYSZUKAJ SWOJĄ ULUBIONĄ KSIĄŻKĘ--------")
-                b = Book()
-                search = b.book_search()
+#ZMIANA - możliwość ponownego wyszukiwania książki
+                search = 2
+                while search == 2:
+                    os.system('csl')
+                    b = Book()
+                    search = b.book_search()
+#ZMIANA KONIEC
                 if search == 1:
                     os.system('csl')
                     pass
