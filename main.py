@@ -245,8 +245,11 @@ def menu_librarian(name,user_id):
         if menu == 1:
             os.system('cls')
             print("--------WYSZUKAJ KSIĄŻKĘ--------")
-            b = Book()
-            search = b.book_search()
+            search = 2
+            while search == 2:
+                os.system('csl')
+                b = Book()
+                search = b.book_search()
 
             if search == 1:
                 os.system('cls')
