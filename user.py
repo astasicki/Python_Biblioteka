@@ -630,9 +630,9 @@ class User:
         for i in cursorMS:
             if i[1] == haslo:
 
-                libs = []
+
                 # Kwerenda pobierająca atrybuty użytkownika z bazy
-                query = "SELECT name, librarian FROM tblUser WHERE email = ?;"
+                query = "SELECT user_id, name, librarian FROM tblUser WHERE email = ?;"
 
                 # Argumenty dodawane poprzez kwerendę
                 arg = (email)
@@ -642,15 +642,17 @@ class User:
 
                 names = []
                 libs = []
+                ids = []
                 for lib in cursorMS:
 
-                    libs.append(lib[1])
-                    names.append(lib[0].capitalize())
+                    libs.append(lib[2])
+                    names.append(lib[1].capitalize())
+                    ids.append(lib[0])
 
 
 
                 print("Logowanie zakończone powodzeniem")
-                return 1, libs[0], names[0]
+                return 1, libs[0], names[0],ids[0]
 
             else:
                 print("Niepoprawne hasło")
@@ -718,7 +720,7 @@ class User:
         wynik_zapytania = cursorMS.fetchall()
         os.system('cls')
         print("---------------------------------")
-        print("Wyniki wyszukiwania:")
+        print("Wyniki wyszukiwania:\n")
         for row in wynik_zapytania:
 
             print(f" user_id: {row[0]} \n"
