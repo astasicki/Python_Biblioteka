@@ -5,7 +5,7 @@ import os
 import time
 
 
-def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk_book_genre, bk_thumbnail, bk_publisher, bk_published_year, bk_description, bk_state, name):
+def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk_book_genre, bk_thumbnail, bk_publisher, bk_published_year, bk_description, bk_state, name,user_id):
     os.system('cls')
     running = True
     while running:
@@ -31,8 +31,9 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
               "\n 5 - Zarezerwuj książkę"
               "\n 6 - Dodaj recenzje"
               "\n 7 - Pokaż recenzję"
-              "\n 8 - Oddaj książkę"
-              "\n 9 - Wróć do menu głównego"
+              "\n 8 - Odwołaj rezerwacje książki"
+              "\n 9 - Oddaj książkę"
+              "\n 10 - Wróć do menu głównego"
 
               )
         print("\n")
@@ -68,7 +69,11 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
         elif menu == 4:
             os.system('cls')
             print("--------WYPOŻYCZ KSIĄŻKĘ--------")
-            borrow = book.book_borrowing()
+            print("Wyszukaj ID użytkownika, dla którego chcesz wypożyczyć książkę\n")
+            user = User()
+            user.user_find()
+            user_idd = int(input("\nPodaj ID użytkownika, dla którego chcesz wypożyczyć książkę \n"))
+            borrow = book.book_borrowing(user_idd)
             if borrow == 1:
                 os.system('cls')
                 pass
@@ -76,7 +81,11 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
         elif menu == 5:
             os.system('cls')
             print("--------ZAREZERWUJ KSIĄŻKĘ--------")
-            booking = book.book_booking()
+            print("Wyszukaj ID użytkownika, dla którego chcesz zarezerwować książkę\n")
+            user = User()
+            user.user_find()
+            user_idd = int(input("\nPodaj ID użytkownika, dla którego chcesz zarezerwować książkę \n"))
+            booking = book.book_booking(user_idd)
             if booking == 1:
                 os.system('cls')
                 pass
@@ -84,7 +93,7 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
         elif menu == 6:
             os.system('cls')
             print("--------DODAJ RECENZJĘ--------")
-            review = book.book_review_add()
+            review = book.book_review_add(user_id)
             if review == 1:
                 os.system('cls')
                 pass
@@ -100,13 +109,32 @@ def menu_librarian_book_edition(book_id,bk_isbn, bk_title,bk_pages, bk_cover, bk
 
         elif menu == 8:
             os.system('cls')
-            print("--------ODDAJ KSIĄŻKĘ--------")
-            book_back = book.book_return_borrowing()
+            print("--------ODWOŁAJ REZERWACJE KSIĄŻKI--------")
+            print("Wyszukaj ID użytkownika, dla którego chcesz odwołać rezerwację książki\n")
+            user = User()
+            user.user_find()
+            user_idd = int(input("\nPodaj ID użytkownika, dla którego chcesz odwołać rezerwacje książki \n"))
+
+
+            book_back = book.book_return_booking(user_idd)
             if book_back == 1:
                 os.system('cls')
                 pass
 
+
         elif menu == 9:
+            os.system('cls')
+            print("--------ODDAJ KSIĄŻKĘ--------")
+            print("Wyszukaj ID użytkownika, dla którego chcesz oddać książkę \n")
+            user = User()
+            user.user_find()
+            user_idd = int(input("\nPodaj ID użytkownika, dla którego chcesz oddać książkę \n"))
+            book_back_booking = book.book_return_borrowing(user_idd)
+            if book_back_booking == 1:
+                os.system('cls')
+                pass
+
+        elif menu == 10:
             print("--------PRZEJDŹ DO MENU GŁÓWNEGO--------")
             os.system('cls')
             menu_librarian(name)
@@ -183,7 +211,7 @@ def menu_librarian_user_edition(user_id,us_name,us_surname,us_email,name):
 
 
 
-def menu_librarian(name):
+def menu_librarian(name,user_id):
     running = True
 
     while running:
@@ -234,7 +262,7 @@ def menu_librarian(name):
             book_id = input("Podaj book_id książki: ")
             b1 = Book()
             search = b1.book_search_as(book_id)
-            menu_librarian_book_edition(search[1], search[0][0], search[0][1], search[0][2], search[0][3], search[0][4], search[0][5], search[0][6], search[0][7], search[0][8], search[0][10], name)
+            menu_librarian_book_edition(search[1], search[0][0], search[0][1], search[0][2], search[0][3], search[0][4], search[0][5], search[0][6], search[0][7], search[0][8], search[0][9], name,user_id)
 
 
 
@@ -380,7 +408,7 @@ def menu_library():
                 #Logowanie poprawne
                 elif login[0] == 1:
                     if login[1] == 1:
-                        menu_librarian(name = login[2])
+                        menu_librarian(name = login[2], user_id=login[3])
 
                     elif login[1] == 0:
                         menu_reader(name = login[2])
