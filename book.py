@@ -295,7 +295,7 @@ class Book:
         print("---------------------------------")
         print("Wyniki wyszukiwania:")
         for row in wynik_zapytania:
-            print(row)
+
             print(f" book_id: {row[0]}; title: {row[2]}; genre: {row[5]} ")
 
         # Zatwierdzenie wywołania kwerendy
@@ -351,7 +351,7 @@ class Book:
 
 
                 print("---------------------------------")
-                print("Wyniki wyszukiwania:")
+                print("Wyniki wyszukiwania:\n")
                 print(f"book_id: {self.book_id}\n"
                       f"ISBN: {self.ISBN}\n"
                       f"title: {self.title}\n"
@@ -371,7 +371,7 @@ class Book:
                 if back == 1:
                     return 1
             else:
-                print(f"Książka o podanym id: {book_id} nie występuje w bazie\n")
+                print(f"\n Książka o podanym id: {book_id} nie występuje w bazie\n")
                 time.sleep(5)
                 break
 
@@ -388,7 +388,7 @@ class Book:
         if back == 1:
             return 1
 
-    def book_booking(self):
+    def book_booking(self,user_id):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
 
@@ -425,7 +425,7 @@ class Book:
                 "VALUES (?,?,?,?) "
 
         # Argumenty dodawane poprzez kwerendę
-        arg = (1, self.book_id, starttime, endtime)
+        arg = (user_id, self.book_id, starttime, endtime)
 
         # Wywołanie kwerendy
         cursorMS.execute(query, arg)
@@ -436,7 +436,7 @@ class Book:
         # Zamknięcie połączenia z bazą
         db_msql.close()
 
-        print("Książka została zarezerwowana \n")
+        print(f"\nKsiążka o podanym id: {self.book_id} została zarezerwowana dla użytkownika o id: {user_id} \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -444,7 +444,7 @@ class Book:
         if back == 1:
             return 1
 
-    def book_borrowing(self):
+    def book_borrowing(self,user_id):
         """Wywołanie metody powoduje wypożyczenie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
 
@@ -481,7 +481,7 @@ class Book:
                 "VALUES (?,?,?,?) "
 
         # Argumenty dodawane poprzez kwerendę
-        arg = (1,self.book_id,starttime,endtime)
+        arg = (user_id,self.book_id,starttime,endtime)
 
         # Wywołanie kwerendy
         cursorMS.execute(query, arg)
@@ -491,7 +491,7 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-        print("Książka została wypożyczona \n")
+        print(f"Książka {self.book_id} została wypożyczona dla użytkownika {user_id}\n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -500,7 +500,7 @@ class Book:
             return 1
 
 
-    def book_review_add(self):
+    def book_review_add(self,user_id):
         """Wywołanie metody powoduje dodanie recenzji i oceny książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
 
@@ -523,7 +523,7 @@ class Book:
 
 
         # Argumenty dodawane poprzez kwerendę
-        arg = (self.book_id,1, stars, review) #zamiast 1 należy wprowadzić id USera integracja z kodem Artura
+        arg = (self.book_id,user_id, stars, review) #zamiast 1 należy wprowadzić id USera integracja z kodem Artura
 
         # Wywołanie kwerendy
         cursorMS.execute(query, arg)
@@ -533,7 +533,7 @@ class Book:
 
         # Zamknięcie połączenia z bazą
         db_msql.close()
-        print("Opinia została dodana \n")
+        print("\nTwoja opinia została dodana \n")
         print("---------------------------------")
         print("Wybierz opcję: ")
         back = input("1 - Powrót do menu głównego ")
@@ -600,7 +600,7 @@ class Book:
         if back == 1:
             return 1
 
-    def book_return_booking(self):
+    def book_return_booking(self,user_id):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
 
@@ -636,7 +636,7 @@ class Book:
 
 
         # Argumenty dodawane poprzez kwerendę
-        arg = (str(datetime.date.today()), self.book_id, 488)
+        arg = (str(datetime.date.today()), self.book_id, user_id)
 
         # Wywołanie kwerendy
         cursorMS.execute(query, arg)
@@ -654,10 +654,9 @@ class Book:
         if back == 1:
             return 1
 
-    def book_return_borrowing(self):
+    def book_return_borrowing(self,user_id):
         """Wywołanie metody powoduje zarezerwowanie książki, którą aktualnie oglądamy"""
         # metoda przypisana do klasy book!
-
 
         # Połączenie do SQL
         db_msql = pyodbc.connect("Driver={SQL Server};"
@@ -670,9 +669,8 @@ class Book:
 
         # Kwerenda dodająca atrybuty użytkownika do bazy
         query = """UPDATE [dbo].[tblBook]
-                    SET    [state] = ?
-                    WHERE book_id = ? """
-
+                       SET    [state] = ?
+                       WHERE book_id = ? """
 
         # Argumenty dodawane poprzez kwerendę
         arg = (1, self.book_id)
@@ -685,12 +683,11 @@ class Book:
 
         # Kwerenda aktualizująca endtime książki w tabeli tblBooking
         query = """UPDATE [dbo].[tblBorrowing]
-                    SET    endtime = ?
-                    WHERE book_id = ? AND user_id = ?"""
-
+                       SET    endtime = ?
+                       WHERE book_id = ? AND user_id = ?"""
 
         # Argumenty dodawane poprzez kwerendę
-        arg = (str(datetime.date.today()), self.book_id, 1319)
+        arg = (str(datetime.date.today()), self.book_id, user_id)
 
         # Wywołanie kwerendy
         cursorMS.execute(query, arg)
@@ -707,6 +704,7 @@ class Book:
 
         if back == 1:
             return 1
+
 
     def book_search_as(self,book_id):
 
